@@ -1,0 +1,2 @@
+add_executable(glfw_opengl3 example_glfw_opengl3.cpp)
+target_link_libraries(glfw_opengl3 PRIVATE imcore)
