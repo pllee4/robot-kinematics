@@ -181,45 +181,56 @@ int main(int, char**) {
                      ImGuiWindowFlags_NoScrollbar |
                      ImGuiWindowFlags_NoBackground);
 
-    for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) {
+    float y_translate;
+    bool y_translate_up;
+    bool y_translate_down;
+
+    // for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++)
+    for (int i = 0x106; i < 0x10a; i++) {
       if (ImGui::IsKeyDown(i)) {
         if (i == 0x106) ImGui::Text("Right key pressed!\n");
         if (i == 0x107) ImGui::Text("Left key pressed!\n");
-        if (i == 0x108) ImGui::Text("Down key pressed!\n");
-        if (i == 0x109) ImGui::Text("Up key pressed!\n");
+        if (i == 0x108) {
+          if (!y_translate_up) y_translate_down = true;
+          if (y_translate_down) y_translate += 2.0;
+        }
+        if (i == 0x109) {
+          if (!y_translate_down) y_translate_up = true;
+          if (y_translate_up) y_translate -= 2.0;
+        }
+      }
+      if (ImGui::IsKeyReleased(i)) {
+        if (i == 0x108) y_translate_down = false;
+        if (i == 0x109) y_translate_up = false;
       }
     }
-
     cairo_surface_t* cairo_surface = nullptr;
     cairo_t* cr = nullptr;
     cairo_surface =
         cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 300.0, 300.0);
     cr = cairo_create(cairo_surface);
 
-    double xc = 128.0;
-    double yc = 128.0;
-    double radius = 100.0;
-    double angle1 = 45.0 * (M_PI / 180.0);  /* angles are specified */
-    double angle2 = 180.0 * (M_PI / 180.0); /* in radians           */
-
     float cx, cy;
-    float front_wheel_width = 10.0;
-    float front_wheel_height = 30.0;
-    float rear_wheel_width = 12.5;
-    float rear_wheel_height = 30.0;
+    float front_wheel_width = 4.0;
+    float front_wheel_height = 15.0;
+    float rear_wheel_width = 5.5;
+    float rear_wheel_height = 15.0;
 
     float front_wheel_left_pos = 100.0;
 
-    float wheel_base = 100.0;
-    float track_width = 40.0;
+    float wheel_base = 60.0;
+    float track_width = 20.0;
     cx = 100.0;
     cy = 100.0;
 
-    // front left wheel
     cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
     cairo_set_line_width(cr, 2.0);
+
+    // translate whole body
+    cairo_translate(cr, 0.0, y_translate);
+
+    // front left wheel
     cairo_rectangle(cr, cx, cy, front_wheel_width, front_wheel_height);
-    cairo_stroke(cr);
 
     // front horizontal line
     cx += front_wheel_width;
@@ -227,33 +238,29 @@ int main(int, char**) {
     cairo_move_to(cr, cx, cy);
     cx += track_width;
     cairo_line_to(cr, cx, cy);
-    cairo_stroke(cr);
 
     // front right wheel
     cy -= front_wheel_height / 2.0;
     cairo_rectangle(cr, cx, cy, front_wheel_width, front_wheel_height);
-    cairo_stroke(cr);
 
     // wheel base
     cy += front_wheel_height / 2.0;
     cx -= track_width / 2.0;
     cairo_move_to(cr, cx, cy);
-    cy += wheel_base; 
+    cy += wheel_base;
     cairo_line_to(cr, cx, cy);
-    cairo_stroke(cr);
 
     // rear left wheel
     cy -= rear_wheel_height / 2.0;
     cx -= track_width / 2.0;
-    cairo_rectangle(cr, cx - rear_wheel_width, cy, rear_wheel_width, rear_wheel_height);
-    cairo_stroke(cr);
+    cairo_rectangle(cr, cx - rear_wheel_width, cy, rear_wheel_width,
+                    rear_wheel_height);
 
     // rear horizontal line
     cy += rear_wheel_height / 2.0;
     cairo_move_to(cr, cx, cy);
     cx += track_width;
     cairo_line_to(cr, cx, cy);
-    cairo_stroke(cr);
 
     // rear right wheel
     cy -= rear_wheel_height / 2.0;
