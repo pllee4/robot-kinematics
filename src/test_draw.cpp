@@ -144,8 +144,7 @@ int main(int, char**) {
   ImGui_ImplOpenGL3_Init(glsl_version);
 
   // Our sta
-  ImVec4 clear_color = ImVec4(0.15f, 0.15f, 0.10f, 1.00f);
-
+  ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.0f, 0.10f);
   GLuint image_texture_;
 
   glGenTextures(1, &image_texture_);
@@ -185,11 +184,13 @@ int main(int, char**) {
     bool y_translate_up;
     bool y_translate_down;
 
+    float turning = 0.0;
+
     // for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++)
     for (int i = 0x106; i < 0x10a; i++) {
       if (ImGui::IsKeyDown(i)) {
-        if (i == 0x106) ImGui::Text("Right key pressed!\n");
-        if (i == 0x107) ImGui::Text("Left key pressed!\n");
+        if (i == 0x106) turning = -20 * M_PI / 180.0;
+        if (i == 0x107) turning = 20.0 * M_PI / 180.0;
         if (i == 0x108) {
           if (!y_translate_up) y_translate_down = true;
           if (y_translate_down) y_translate += 2.0;
@@ -220,17 +221,24 @@ int main(int, char**) {
 
     float wheel_base = 60.0;
     float track_width = 20.0;
-    cx = 100.0;
-    cy = 100.0;
+    cx = 0.0;
+    cy = 0.0;
 
     cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
-    cairo_set_line_width(cr, 2.0);
+    cairo_set_line_width(cr, 1.75);
+    cairo_translate(cr, 100.0, 100);
 
     // translate whole body
     cairo_translate(cr, 0.0, y_translate);
 
     // front left wheel
-    cairo_rectangle(cr, cx, cy, front_wheel_width, front_wheel_height);
+    cairo_save(cr);
+    // go to origin of rotation
+    cairo_translate(cr, front_wheel_width / 2.0, front_wheel_height / 2.0);
+    cairo_rotate(cr, -turning);
+    cairo_rectangle(cr, -front_wheel_width / 2.0, -front_wheel_height / 2.0,
+                    front_wheel_width, front_wheel_height);
+    cairo_restore(cr);
 
     // front horizontal line
     cx += front_wheel_width;
@@ -240,11 +248,17 @@ int main(int, char**) {
     cairo_line_to(cr, cx, cy);
 
     // front right wheel
-    cy -= front_wheel_height / 2.0;
-    cairo_rectangle(cr, cx, cy, front_wheel_width, front_wheel_height);
+    cairo_save(cr);
+    // go to origin of rotation
+    cairo_translate(cr,
+                    front_wheel_width + track_width + front_wheel_width / 2.0,
+                    front_wheel_height / 2.0);
+    cairo_rotate(cr, -turning);
+    cairo_rectangle(cr, -front_wheel_width / 2.0, -front_wheel_height / 2.0,
+                    front_wheel_width, front_wheel_height);
+    cairo_restore(cr);
 
     // wheel base
-    cy += front_wheel_height / 2.0;
     cx -= track_width / 2.0;
     cairo_move_to(cr, cx, cy);
     cy += wheel_base;
