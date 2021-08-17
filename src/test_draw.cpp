@@ -189,13 +189,13 @@ int main(int, char**) {
     // for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++)
     for (int i = 0x106; i < 0x10a; i++) {
       if (ImGui::IsKeyDown(i)) {
-        if (i == 0x106) turning = -20 * M_PI / 180.0;
-        if (i == 0x107) turning = 20.0 * M_PI / 180.0;
-        if (i == 0x108) {
+        if (i == 0x106) turning = 20 * M_PI / 180.0; //right
+        if (i == 0x107) turning = -20.0 * M_PI / 180.0; // left
+        if (i == 0x108) { // up
           if (!y_translate_up) y_translate_down = true;
           if (y_translate_down) y_translate += 2.0;
         }
-        if (i == 0x109) {
+        if (i == 0x109) { // down
           if (!y_translate_down) y_translate_up = true;
           if (y_translate_up) y_translate -= 2.0;
         }
@@ -229,13 +229,38 @@ int main(int, char**) {
     cairo_translate(cr, 100.0, 100);
 
     // translate whole body
-    cairo_translate(cr, 0.0, y_translate);
+    float speed;
+    if (y_translate_up) {
+      speed = 2.0;
+    } else if (y_translate_down) {
+      speed = -2.0;
+    } else {
+      speed = 0.0;
+    }
+    static float theta = 0.0;
+    static float x = 0.0;
+    static float y = 0.0;
+    theta += speed * tan(turning) / wheel_base;
+    y += speed * cos(theta);
+    x += speed * sin(theta);
+  
+    // text for troubleshoot
+    ImGui::Text("speed: %f", speed);
+    ImGui::Text("sin(theta): %f", sin(theta));
+    ImGui::Text("cos(theta): %f", cos(theta));
+    ImGui::Text("theta: %f", theta);
+    ImGui::Text("x: %f", x);
+    ImGui::Text("y: %f", y);
+    // cairo_translate(cr, 0.0, y_translate);
+    cairo_translate(cr, x, -y); // -y to move upwards
+    
+    cairo_rotate(cr, theta);
 
     // front left wheel
     cairo_save(cr);
     // go to origin of rotation
     cairo_translate(cr, front_wheel_width / 2.0, front_wheel_height / 2.0);
-    cairo_rotate(cr, -turning);
+    cairo_rotate(cr, turning);
     cairo_rectangle(cr, -front_wheel_width / 2.0, -front_wheel_height / 2.0,
                     front_wheel_width, front_wheel_height);
     cairo_restore(cr);
@@ -253,7 +278,7 @@ int main(int, char**) {
     cairo_translate(cr,
                     front_wheel_width + track_width + front_wheel_width / 2.0,
                     front_wheel_height / 2.0);
-    cairo_rotate(cr, -turning);
+    cairo_rotate(cr, turning);
     cairo_rectangle(cr, -front_wheel_width / 2.0, -front_wheel_height / 2.0,
                     front_wheel_width, front_wheel_height);
     cairo_restore(cr);
