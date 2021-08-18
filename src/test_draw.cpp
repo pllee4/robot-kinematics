@@ -93,7 +93,7 @@ int main(int, char**) {
 
   // Create window with graphics context
   GLFWwindow* window =
-      glfwCreateWindow(1280, 720, "Robot kinematics simulator", NULL, NULL);
+      glfwCreateWindow(1080, 720, "Robot kinematics simulator", NULL, NULL);
   if (window == NULL) return 1;
   glfwMakeContextCurrent(window);
   glfwSwapInterval(1);  // Enable vsync
@@ -208,25 +208,25 @@ int main(int, char**) {
     cairo_surface_t* cairo_surface = nullptr;
     cairo_t* cr = nullptr;
     cairo_surface =
-        cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 300.0, 300.0);
+        cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 450.0, 300.0);
     cr = cairo_create(cairo_surface);
 
     float cx, cy;
     float front_wheel_width = 4.0;
-    float front_wheel_height = 15.0;
+    float front_wheel_height = 12.0;
     float rear_wheel_width = 5.5;
-    float rear_wheel_height = 15.0;
+    float rear_wheel_height = 12.0;
 
     float front_wheel_left_pos = 100.0;
 
-    float wheel_base = 60.0;
-    float track_width = 20.0;
+    float wheel_base = 45.0;
+    float track_width = 30.0;
     cx = 0.0;
     cy = 0.0;
 
     cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
     cairo_set_line_width(cr, 1.75);
-    cairo_translate(cr, 100.0, 100);
+    cairo_translate(cr, 150.0, 100);
 
     // translate whole body
     float speed;
@@ -245,12 +245,12 @@ int main(int, char**) {
     x += speed * sin(theta);
   
     // text for troubleshoot
-    ImGui::Text("speed: %f", speed);
-    ImGui::Text("sin(theta): %f", sin(theta));
-    ImGui::Text("cos(theta): %f", cos(theta));
-    ImGui::Text("theta: %f", theta);
-    ImGui::Text("x: %f", x);
-    ImGui::Text("y: %f", y);
+    // ImGui::Text("speed: %f", speed);
+    // ImGui::Text("sin(theta): %f", sin(theta));
+    // ImGui::Text("cos(theta): %f", cos(theta));
+    // ImGui::Text("theta: %f", theta);
+    // ImGui::Text("x: %f", x);
+    // ImGui::Text("y: %f", y);
     // cairo_translate(cr, 0.0, y_translate);
     cairo_translate(cr, x, -y); // -y to move upwards
     
@@ -310,7 +310,7 @@ int main(int, char**) {
 
     // convert surface to OpenGL texture
     unsigned char* data = cairo_image_surface_get_data(cairo_surface);
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, 300, 300, 0, GL_BGRA, GL_UNSIGNED_BYTE,
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, 450, 300, 0, GL_BGRA, GL_UNSIGNED_BYTE,
                  data);
 
     // unbind texture
