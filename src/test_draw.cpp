@@ -189,8 +189,8 @@ int main(int, char**) {
     // for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++)
     for (int i = 0x106; i < 0x10a; i++) {
       if (ImGui::IsKeyDown(i)) {
-        if (i == 0x106) turning = 20 * M_PI / 180.0; //right
-        if (i == 0x107) turning = -20.0 * M_PI / 180.0; // left
+        if (i == 0x106) turning = 30 * M_PI / 180.0; //right
+        if (i == 0x107) turning = -30.0 * M_PI / 180.0; // left
         if (i == 0x108) { // up
           if (!y_translate_up) y_translate_down = true;
           if (y_translate_down) y_translate += 2.0;
@@ -253,8 +253,12 @@ int main(int, char**) {
     // ImGui::Text("y: %f", y);
     // cairo_translate(cr, 0.0, y_translate);
     cairo_translate(cr, x, -y); // -y to move upwards
-    
-    cairo_rotate(cr, theta);
+
+    if (fabs(theta) > 0.0) {
+      cairo_translate(cr, front_wheel_width + track_width / 2.0, 0);
+      cairo_rotate(cr, theta);
+      cairo_translate(cr, -(front_wheel_width + track_width / 2.0), 0);
+    }
 
     // front left wheel
     cairo_save(cr);
