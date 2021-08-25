@@ -32,3 +32,4 @@ target_include_directories(imcore PUBLIC
     $<INSTALL_INTERFACE:include/imgui/examples/libs/gl3w>)
 
 add_subdirectory(example)
+add_subdirectory(googletest)
