@@ -1,0 +1,23 @@
+name: Build and Test
+
+on:
+  [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install pkg-config libgl1-mesa-dev libglfw3-dev libcairo2-dev
+      - name: Build
+        run: mkdir build && cd build && cmake .. && cmake --build .
+      - name: Test
+        run: cd ./build && make test
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with: 
+          name: test-reports
+          path: build/test-reports
+      - name: Download artifacts
+        uses: actions/download-artifact@v2

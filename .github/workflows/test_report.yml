@@ -1,0 +1,19 @@
+name: Test Report
+
+on:
+  workflow_run:
+    workflows: ['Build and Test']
+    types:
+      - completed
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate test report
+        uses: dorny/test-reporter@v1
+        with:
+          artifact: test-reports
+          name: Test report
+          path: '*.xml'
+          reporter: jest-junit
