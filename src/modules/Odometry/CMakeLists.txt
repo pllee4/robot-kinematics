@@ -11,7 +11,7 @@ $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
 target_link_libraries(OdometryTest PRIVATE gtest gmock gtest_main)
 
-gtest_discover_tests(OdometryTest)
+gtest_discover_tests(OdometryTest XML_OUTPUT_DIR ${PROJECT_BINARY_DIR}/test-reports)
 add_test(NAME gtest_all COMMAND OdometryTest)
 
 
