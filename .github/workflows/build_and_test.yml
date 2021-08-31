@@ -12,16 +12,26 @@ jobs:
         run: sudo apt-get update && sudo apt-get install pkg-config libgl1-mesa-dev libglfw3-dev libcairo2-dev
       - name: Build
         run: mkdir build && cd build && cmake .. && cmake --build .
+      - name: Share build folder
+        uses: actions/upload-artifact@v2
+        with: 
+          name: build
+          path: build
+  
   test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Get build folder
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
       - name: Test
-        run: mkdir build && cd build && cmake .. && cmake --build . && make test
+        run: cd build && chmod -R 755 bin && make test
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with: 
           name: test-reports
           path: build/test-reports
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
