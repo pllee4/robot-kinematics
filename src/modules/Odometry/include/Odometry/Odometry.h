@@ -2,7 +2,11 @@
  * Odometry.h
  * Created on: Aug 30, 2021 07:14
  * Description:
- *
+ * [1]: rotation clockwise means theta negative
+ * 
+ * Reference:
+ * [1] https://www.astro.rug.nl/software/kapteyn-beta/_downloads/attitude.pdf
+ * 
  * Copyright (c) 2021 Pin Loon Lee (pllee4)
  */
 
@@ -17,9 +21,17 @@ extern "C" {
 #include <stdint.h>
 
 typedef struct {
+  float w;
+  float x;
+  float y;
+  float z;
+} Quaternion;
+
+typedef struct {
   float x;
   float y;
   float theta;
+  Quaternion quaternion;
 } Odometry;
 
 typedef struct {
