@@ -38,6 +38,7 @@ typedef struct {
   float rep_scaling;
   float att_scaling;
   uint8_t num_sensor;
+  float min_detectable_distance;
   float max_turn;
   float max_accel;
   float max_speed;

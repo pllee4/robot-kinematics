@@ -35,22 +35,34 @@ PotentialFieldOutput CalculatePotentialField(PotentialFieldInstance *instance,
     sensor_distance = *(input.sensor_distance + i);
     sensor_threshold = *(input.sensor_threshold + i);
     sensor_direction = *(input.sensor_direction + i);
+    if (sensor_distance <= instance->min_detectable_distance)
+      sensor_distance = instance->min_detectable_distance + 0.1;
     if (sensor_distance <= sensor_threshold) {
-      // rep_pot.x += 0.5 * instance->rep_scaling *
-      //              pow(((1 / sensor_distance) - (1 / sensor_threshold)), 2) *
-      //              cos(input.theta + sensor_direction);
-      // printf(" %.2f ",
-      //        0.5 * instance->rep_scaling *
-      //            pow(((1 / sensor_distance) - (1 / sensor_threshold)), 2) *
-      //            cos(input.theta + sensor_direction));
+      // rep_pot.x +=
+      //     0.5 * instance->rep_scaling *
+      //     pow(((1 / (sensor_distance - instance->min_detectable_distance)) -
+      //          (1 / sensor_threshold)),
+      //         2) *
+      //     cos(input.theta + sensor_direction);
+      // printf(
+      //     " %.2f ",
+      //     0.5 * instance->rep_scaling *
+      //         pow(((1 / (sensor_distance -
+      //         instance->min_detectable_distance)) -
+      //              (1 / sensor_threshold)),
+      //             2) *
+      //         cos(input.theta + sensor_direction));
 
       rep_pot.x +=
-          (1.0 / pow(sensor_distance, 2) * cos(input.theta + sensor_direction));
-      printf(" %.2f ", instance->rep_scaling / pow(sensor_distance, 2) *
-                           cos(input.theta + sensor_direction));
+          (1.0 / pow(sensor_distance - instance->min_detectable_distance, 2) *
+           cos(input.theta + sensor_direction));
+      printf(" %.2f ",
+             instance->rep_scaling /
+                 pow(sensor_distance - instance->min_detectable_distance, 2) *
+                 cos(input.theta + sensor_direction));
     }
   }
-  printf(" ->total rep_pot.x = %.2f\n", rep_pot.x);
+  // printf(" ->total rep_pot.x = %.2f\n", rep_pot.x * instance->rep_scaling);
 
   rep_pot.y = 0;
   printf("rep_pot.y ");
@@ -58,19 +70,26 @@ PotentialFieldOutput CalculatePotentialField(PotentialFieldInstance *instance,
     sensor_distance = *(input.sensor_distance + i);
     sensor_threshold = *(input.sensor_threshold + i);
     sensor_direction = *(input.sensor_direction + i);
-
+    if (sensor_distance <= instance->min_detectable_distance)
+      sensor_distance = instance->min_detectable_distance + 0.1;
     if (sensor_distance <= sensor_threshold) {
-      // rep_pot.y += 0.5 * instance->rep_scaling *
-      //              pow(((1 / sensor_distance) - (1 / sensor_threshold)), 2) *
-      //              sin(input.theta + sensor_direction);
-      // printf(" %.2f ",
-      //        0.5 * instance->rep_scaling *
-      //            pow(((1 / sensor_distance) - (1 / sensor_threshold)), 2) *
-      //            sin(input.theta + sensor_direction));
+      // rep_pot.y +=
+      //     0.5 * instance->rep_scaling *
+      //     pow(((1 / (sensor_distance - instance->min_detectable_distance)) -
+      //          (1 / sensor_threshold)),
+      //         2) *
+      //     sin(input.theta + sensor_direction);
+      // printf(
+      //     " %.2f ",
+      //     0.5 * instance->rep_scaling *
+      //         pow(((1 / (sensor_distance - instance->min_detectable_distance)) -
+      //              (1 / sensor_threshold)),
+      //             2) *
+      //         sin(input.theta + sensor_direction));
 
-      rep_pot.y +=
-          (1.0 / pow(sensor_distance, 2) * sin(input.theta + sensor_direction));
-      printf(" %.2f ", instance->rep_scaling / pow(sensor_distance, 2) *
+      rep_pot.y += (1.0 / pow(sensor_distance - 20.0, 2) *
+                    sin(input.theta + sensor_direction));
+      printf(" %.2f ", instance->rep_scaling / pow(sensor_distance - 20.0, 2) *
                            sin(input.theta + sensor_direction));
     }
   }
