@@ -19,7 +19,6 @@ typedef struct {
 } PotentialFieldDirection;
 
 // private function
-
 PotentialFieldOutput CalculatePotentialField(PotentialFieldInstance *instance,
                                              PotentialFieldInput input) {
   double min_att_pot = 0.5;
@@ -38,21 +37,6 @@ PotentialFieldOutput CalculatePotentialField(PotentialFieldInstance *instance,
     if (sensor_distance <= instance->min_detectable_distance)
       sensor_distance = instance->min_detectable_distance + 0.1;
     if (sensor_distance <= sensor_threshold) {
-      // rep_pot.x +=
-      //     0.5 * instance->rep_scaling *
-      //     pow(((1 / (sensor_distance - instance->min_detectable_distance)) -
-      //          (1 / sensor_threshold)),
-      //         2) *
-      //     cos(input.theta + sensor_direction);
-      // printf(
-      //     " %.2f ",
-      //     0.5 * instance->rep_scaling *
-      //         pow(((1 / (sensor_distance -
-      //         instance->min_detectable_distance)) -
-      //              (1 / sensor_threshold)),
-      //             2) *
-      //         cos(input.theta + sensor_direction));
-
       rep_pot.x +=
           (1.0 / pow(sensor_distance - instance->min_detectable_distance, 2) *
            cos(input.theta + sensor_direction));
@@ -73,22 +57,9 @@ PotentialFieldOutput CalculatePotentialField(PotentialFieldInstance *instance,
     if (sensor_distance <= instance->min_detectable_distance)
       sensor_distance = instance->min_detectable_distance + 0.1;
     if (sensor_distance <= sensor_threshold) {
-      // rep_pot.y +=
-      //     0.5 * instance->rep_scaling *
-      //     pow(((1 / (sensor_distance - instance->min_detectable_distance)) -
-      //          (1 / sensor_threshold)),
-      //         2) *
-      //     sin(input.theta + sensor_direction);
-      // printf(
-      //     " %.2f ",
-      //     0.5 * instance->rep_scaling *
-      //         pow(((1 / (sensor_distance - instance->min_detectable_distance)) -
-      //              (1 / sensor_threshold)),
-      //             2) *
-      //         sin(input.theta + sensor_direction));
-
-      rep_pot.y += (1.0 / pow(sensor_distance - 20.0, 2) *
-                    sin(input.theta + sensor_direction));
+      rep_pot.y +=
+          (1.0 / pow(sensor_distance instance->min_detectable_distance, 2) *
+           sin(input.theta + sensor_direction));
       printf(" %.2f ", instance->rep_scaling / pow(sensor_distance - 20.0, 2) *
                            sin(input.theta + sensor_direction));
     }
