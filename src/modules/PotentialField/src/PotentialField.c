@@ -58,7 +58,7 @@ PotentialFieldOutput CalculatePotentialField(PotentialFieldInstance *instance,
       sensor_distance = instance->min_detectable_distance + 0.1;
     if (sensor_distance <= sensor_threshold) {
       rep_pot.y +=
-          (1.0 / pow(sensor_distance instance->min_detectable_distance, 2) *
+          (1.0 / pow(sensor_distance - instance->min_detectable_distance, 2) *
            sin(input.theta + sensor_direction));
       printf(" %.2f ", instance->rep_scaling / pow(sensor_distance - 20.0, 2) *
                            sin(input.theta + sensor_direction));
