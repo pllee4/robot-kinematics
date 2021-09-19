@@ -18,6 +18,13 @@
 
 <!-- $\mathrm{U}{q_{rep} = 0, D(q) > Q^{*}}$ --> <img style="transform: translateY(0.1em); background: white;" src="https://render.githubusercontent.com/render/math?math=%5Cmathrm%7BU%7D%7Bq_%7Brep%7D%20%3D%200%2C%20D(q)%20%3E%20Q%5E%7B*%7D%7D">
 
+For the the algorithm used,
+<!-- ${Q^{*}}$ --> <img style="transform: translateY(0.1em); background: white;" src="https://render.githubusercontent.com/render/math?math=%7BQ%5E%7B*%7D%7D"> is assumed to be 
+<!-- ${\infty}$ --> <img style="transform: translateY(0.1em); background: white;" src="https://render.githubusercontent.com/render/math?math=%7B%5Cinfty%7D">
+
+Hence, 
+<!-- $\mathrm{U}{q_{rep}} = k_{scaling}{\frac{1}{D(q)^2}, D(q) \le Q^{*}}$ --> <img style="transform: translateY(0.1em); background: white;" src="https://render.githubusercontent.com/render/math?math=%5Cmathrm%7BU%7D%7Bq_%7Brep%7D%7D%20%3D%20k_%7Bscaling%7D%7B%5Cfrac%7B1%7D%7BD(q)%5E2%7D%2C%20D(q)%20%5Cle%20Q%5E%7B*%7D%7D">
+
 ## References
 1. https://www.cs.cmu.edu/~motionplanning/lecture/Chap4-Potential-Field_howie.pdf
 2. https://www.youtube.com/watch?v=Ls8EBoG_SEQ
