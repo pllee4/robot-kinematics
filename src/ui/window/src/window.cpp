@@ -14,7 +14,6 @@
 
 #include "window/window.hpp"
 
-#include <cairo.h>
 #include <stdexcept>
 
 namespace pllee4 {
