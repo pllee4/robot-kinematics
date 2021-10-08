@@ -175,6 +175,52 @@ int main(int, char**) {
     // wheel base
     cx -= track_width / 2.0;
     cairo_move_to(cr, cx, cy);
+
+    static bool show_trajectory = true;
+    static bool toggle_show_trajectory = false;
+ 
+    if (ImGui::IsKeyDown(32)) {
+      if (!toggle_show_trajectory) {
+        toggle_show_trajectory = true;
+        show_trajectory = !show_trajectory;
+      }
+    } else {
+      toggle_show_trajectory = false;
+    }
+
+    if (show_trajectory) {
+      float estimated_theta = 0;
+      float estimated_cx = cx;
+      float estimated_cy = cy;
+
+      static const double dashed_line[] = {14.0, 6.0};
+      static int len = sizeof(dashed_line) / sizeof(dashed_line[0]);
+
+      cairo_stroke(cr);
+      if (speed < 0) {
+        estimated_cy += wheel_base;
+        cairo_set_source_rgb(cr, 0.4, 0.2, 0.1);
+      } else {
+        cairo_set_source_rgb(cr, 0.2, 0.4, 0.1);
+      }
+      cairo_set_line_width(cr, 6);
+
+      cairo_set_dash(cr, dashed_line, 3, 0);
+      for (uint16_t i = 0; i < 40; i++) {
+        cairo_move_to(cr, estimated_cx, estimated_cy);
+        estimated_theta += speed * tan(turning) / wheel_base;
+        estimated_cx += speed * sin(estimated_theta);
+        estimated_cy -= speed * cos(estimated_theta);
+        cairo_line_to(cr, estimated_cx, estimated_cy);
+      }
+      cairo_stroke(cr);
+      static const double no_dashed[] = {1.0};
+      cairo_set_dash(cr, no_dashed, 0, 0);
+      cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+    }
+
+    cairo_set_line_width(cr, 1.75);
+    cairo_move_to(cr, cx, cy);
     cy += wheel_base;
     cairo_line_to(cr, cx, cy);
 
