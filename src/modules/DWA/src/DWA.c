@@ -15,14 +15,14 @@ void CreateDynamicWindow(Velocity velocity, DWAConfig config,
                          DynamicWindow *dynamic_window) {
   float min_v =
       max(config.min_speed, velocity.linear - config.max_accel * config.dt);
-  float maxV =
+  float max_v =
       min(config.max_speed, velocity.linear + config.max_accel * config.dt);
   float min_w = max(-config.max_yaw_rate,
                     velocity.angular - config.max_delta_yaw_rate * config.dt);
   float max_w = min(config.max_yaw_rate,
                     velocity.angular + config.max_delta_yaw_rate * config.dt);
 
-  int num_possible_v = (maxV - min_v) / config.vel_resolution;
+  int num_possible_v = (max_v - min_v) / config.vel_resolution;
   int num_possible_w = (max_w - min_w) / config.yaw_resolution;
 
   dynamic_window->possible_v = malloc(num_possible_v * sizeof(float));
