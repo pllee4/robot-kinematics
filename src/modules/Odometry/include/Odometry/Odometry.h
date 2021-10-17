@@ -3,10 +3,10 @@
  * Created on: Aug 30, 2021 07:14
  * Description:
  * [1]: rotation clockwise means theta negative
- * 
+ *
  * Reference:
  * [1] https://www.astro.rug.nl/software/kapteyn-beta/_downloads/attitude.pdf
- * 
+ * [2] http://www.ladispe.polito.it/corsi/meccatronica/01CFI/2011-12/Slides/PR_2012_06-Robot%20motion.pdf
  * Copyright (c) 2021 Pin Loon Lee (pllee4)
  */
 
