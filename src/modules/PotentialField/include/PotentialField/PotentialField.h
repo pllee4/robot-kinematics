@@ -44,9 +44,18 @@ typedef struct {
   float max_speed;
 } PotentialFieldInstance;
 
+typedef struct {
+  float x;
+  float y;
+  float total;
+} RepulsivePotentialField;
+
 bool InitPotentialField(PotentialFieldInstance *instance);
 PotentialFieldOutput PotentialFieldLoop(PotentialFieldInstance *instance,
                                         PotentialFieldInput input);
+// simpler version, just to get Repulsive PotentialField
+RepulsivePotentialField GetRepulsivePotentialField(
+    PotentialFieldInstance *instance, PotentialFieldInput input);
 
 // input - robot speed, theta, distance goal, angle goal distance from sensor
 // output - resultant_speed, theta,

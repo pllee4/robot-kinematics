@@ -146,3 +146,44 @@ PotentialFieldOutput PotentialFieldLoop(PotentialFieldInstance *instance,
   printf("res_theta %.2f\n", output.res_theta);
   return output;
 }
+
+RepulsivePotentialField GetRepulsivePotentialField(
+    PotentialFieldInstance *instance, PotentialFieldInput input) {
+  RepulsivePotentialField rep_pot = {0.0, 0.0, 0.0};
+
+  float sensor_distance;
+  float sensor_threshold;
+  float sensor_direction;
+
+  for (uint8_t i = 0; i < instance->num_sensor; ++i) {
+    sensor_distance = *(input.sensor_distance + i);
+    sensor_threshold = *(input.sensor_threshold + i);
+    sensor_direction = *(input.sensor_direction + i);
+    // prevent division by zero if sensor distance is at min_detectable distance
+    if (sensor_distance <= instance->min_detectable_distance)
+      sensor_distance = instance->min_detectable_distance + 0.1;
+    if (sensor_distance <= sensor_threshold) {
+      rep_pot.x +=
+          (1.0 / pow(sensor_distance - instance->min_detectable_distance, 2) *
+           cos(sensor_direction));
+    }
+  }
+
+  for (uint8_t i = 0; i < instance->num_sensor; ++i) {
+    sensor_distance = *(input.sensor_distance + i);
+    sensor_threshold = *(input.sensor_threshold + i);
+    sensor_direction = *(input.sensor_direction + i);
+    // prevent division by zero if sensor distance is at min_detectable distance
+    if (sensor_distance <= instance->min_detectable_distance)
+      sensor_distance = instance->min_detectable_distance + 0.1;
+    if (sensor_distance <= sensor_threshold) {
+      rep_pot.y +=
+          (1.0 / pow(sensor_distance - instance->min_detectable_distance, 2) *
+           sin(sensor_direction));
+    }
+  }
+  rep_pot.x = instance->rep_scaling * rep_pot.x;
+  rep_pot.y = instance->rep_scaling * rep_pot.y;
+  rep_pot.total = sqrt(pow(rep_pot.x, 2) + pow(rep_pot.y, 2));
+  return rep_pot;
+}
