@@ -9,6 +9,12 @@
 #include "TrajectoryPredictor/TrajectoryPredictor.h"
 #include <math.h>
 
+// private function
+float ComputeDistance(TrajectoryPoint *points) {
+  return sqrt(pow((points[1].x - points[0].x), 2) +
+              pow((points[1].y - points[0].y), 2));
+}
+
 void GetTrajectoryPoints(uint16_t num_of_points, TrajectoryPoint *points,
                          TrajectoryConfig config) {
   // prev_angular is ignored here
@@ -44,4 +50,10 @@ void GetTrajectoryPoints(uint16_t num_of_points, TrajectoryPoint *points,
           points[i - 1].theta + prev_angular * config.sampling_time;
     }
   }
+}
+
+float GetFinalPointDistance(TrajectoryConfig config) {
+  TrajectoryPoint trajectory_points[2];
+  GetTrajectoryPoints(2, trajectory_points, config);
+  return ComputeDistance(trajectory_points);
 }

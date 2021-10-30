@@ -1,4 +1,4 @@
-/* 
+/*
  * TrajectoryPredictor.h
  * Created on: Oct 18, 2021 21:26
  * Description: Curently only valid for differential model
@@ -7,7 +7,7 @@
  * Reference:
  * http://www.ladispe.polito.it/corsi/meccatronica/01CFI/2011-12/Slides/PR_2012_06-Robot%20motion.pdf
  * Copyright (c) 2021 Pin Loon Lee (pllee4)
- */ 
+ */
 
 #ifndef TRAJECTORYPREDICTOR_H
 #define TRAJECTORYPREDICTOR_H
@@ -37,6 +37,7 @@ typedef struct {
 
 void GetTrajectoryPoints(uint16_t num_of_points, TrajectoryPoint *points,
                          TrajectoryConfig config);
+float GetFinalPointDistance(TrajectoryConfig config);
 
 #ifdef __cplusplus
 }
