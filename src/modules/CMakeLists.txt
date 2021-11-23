@@ -1,2 +1,3 @@
 add_subdirectory(Odometry)
+add_subdirectory(PotentialField)
 add_subdirectory(TrajectoryPredictor)
