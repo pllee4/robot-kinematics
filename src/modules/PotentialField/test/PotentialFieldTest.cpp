@@ -22,6 +22,11 @@ TEST(PotentialField, Initialization) {
 }
 
 TEST(PotentialField, GetRepulsivePotentialField) {
+  potential_field_instance.rep_scaling = 1000;
+  potential_field_instance.num_sensor = 4;
+  potential_field_instance.min_detectable_distance = 20;
+  InitPotentialField(&potential_field_instance);
+
   float sensor_distance[4] = {1000.0, 1000.0, 1000.0, 1000.0};
   float sensor_direction[4] = {M_PI / 6.0f, 0, 0, -M_PI / 6.0f};
   float sensor_threshold[4] = {120.0, 120.0, 120.0, 120.0};
