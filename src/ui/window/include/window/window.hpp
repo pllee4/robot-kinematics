@@ -26,10 +26,6 @@ class Window {
   void RenderFrame();
 
  private:
-  static constexpr const char* glsl_version_ = "#version 130";
-  static constexpr int glfw_context_version_major_ = 3;
-  static constexpr int glfw_context_version_minor_ = 0;
-
   GLFWwindow* glfw_window_;
 
   ImVec4 clear_color_ = ImVec4(0.0f, 0.0f, 0.0f, 0.10f);

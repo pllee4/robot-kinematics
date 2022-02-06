@@ -13,14 +13,16 @@
 #include <GL/gl3w.h>
 
 #include "window/window.hpp"
+#include "window/details/glfw_version.hpp"
 
 #include <stdexcept>
 
 namespace pllee4 {
-
-static void glfw_error_callback(int error, const char* description) {
-  fprintf(stderr, "Glfw Error %d: %s\n", error, description);
-}
+  using namespace backend;
+  static void glfw_error_callback(int error, const char *description)
+  {
+    fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+  }
 
 Window::Window(uint16_t width, uint16_t height, std::string title) {
   glfwSetErrorCallback(glfw_error_callback);
@@ -28,8 +30,8 @@ Window::Window(uint16_t width, uint16_t height, std::string title) {
     throw std::runtime_error("Failed to create GLFW window");
   }
 
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glfw_context_version_major_);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glfw_context_version_minor_);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, UIBackend::glfw_context_version_major_);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, UIBackend::glfw_context_version_minor_);
 
   // Create window with graphics context
   glfw_window_ = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
@@ -50,7 +52,7 @@ Window::Window(uint16_t width, uint16_t height, std::string title) {
 
   // Setup Platform/Renderer backends
   ImGui_ImplGlfw_InitForOpenGL(glfw_window_, true);
-  ImGui_ImplOpenGL3_Init(glsl_version_);
+  ImGui_ImplOpenGL3_Init(UIBackend::glsl_version_);
 }
 
 Window::~Window() {
