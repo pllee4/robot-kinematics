@@ -9,9 +9,8 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+#include <memory>
 #include <string>
-
-#include <GLFW/glfw3.h>
 
 namespace pllee4 {
 
@@ -26,9 +25,8 @@ class Window {
   void RenderFrame();
 
  private:
-  GLFWwindow* glfw_window_;
-
-  ImVec4 clear_color_ = ImVec4(0.0f, 0.0f, 0.0f, 0.10f);
+  class impl;
+  std::unique_ptr<impl> pimpl_;
 };
 }  // namespace pllee4
 #endif /* WINDOW_HPP */
