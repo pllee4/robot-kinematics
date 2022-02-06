@@ -18,6 +18,7 @@
 #include "window/window.hpp"
 
 namespace pllee4 {
+namespace ui {
 using namespace backend;
 class Window::impl {
   static void glfw_error_callback(int error, const char *description) {
@@ -95,4 +96,5 @@ class Window::impl {
 
   ImVec4 clear_color_ = ImVec4(0.0f, 0.0f, 0.0f, 0.10f);
 };
+}  // namespace ui
 }  // namespace pllee4

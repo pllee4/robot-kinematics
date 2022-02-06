@@ -11,6 +11,7 @@
 #include "window_impl.cpp"
 
 namespace pllee4 {
+namespace ui {
 Window::Window(uint16_t width, uint16_t height, std::string title)
     : pimpl_(new impl(width, height, title)) {}
 
@@ -21,5 +22,5 @@ bool Window::ShouldClose() { return pimpl_->ShouldClose(); }
 void Window::StartFrame() { pimpl_->StartFrame(); }
 
 void Window::RenderFrame() { pimpl_->RenderFrame(); }
-
+}  // namespace ui
 }  // namespace pllee4
