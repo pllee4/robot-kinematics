@@ -13,8 +13,10 @@ namespace ui {
 DisplayBase::DisplayBase(uint16_t width, uint16_t height, std::string title) {
   window_ = std::make_unique<Window>(width, height, title);
 }
+
 void DisplayBase::ShowDisplay() {
   while (!window_->ShouldClose()) {
+    window_->PollEvent();
     window_->StartFrame();
     Display();  // to be overriden
     window_->RenderFrame();

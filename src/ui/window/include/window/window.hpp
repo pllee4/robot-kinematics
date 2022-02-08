@@ -21,6 +21,7 @@ class Window {
   ~Window();
 
   bool ShouldClose();
+  void PollEvent();
   void StartFrame();
   void RenderFrame();
 

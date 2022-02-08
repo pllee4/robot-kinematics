@@ -19,6 +19,8 @@ Window::~Window() = default;
 
 bool Window::ShouldClose() { return pimpl_->ShouldClose(); }
 
+void Window::PollEvent() { pimpl_->PollEvent(); }
+
 void Window::StartFrame() { pimpl_->StartFrame(); }
 
 void Window::RenderFrame() { pimpl_->RenderFrame(); }

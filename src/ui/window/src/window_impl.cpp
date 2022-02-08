@@ -71,6 +71,8 @@ class Window::impl {
 
   bool ShouldClose() { return glfwWindowShouldClose(glfw_window_); }
 
+  void PollEvent() { glfwPollEvents(); }
+
   void StartFrame() {
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
