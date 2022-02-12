@@ -28,6 +28,7 @@
 #include <vector>
 
 using namespace pllee4;
+using namespace ui;
 
 int main(int, char**) {
   // Setup window

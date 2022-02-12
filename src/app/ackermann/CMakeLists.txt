@@ -1,0 +1,2 @@
+add_executable(app_ackermann app_ackermann.cpp)
+target_link_libraries(app_ackermann model)

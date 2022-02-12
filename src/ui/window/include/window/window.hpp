@@ -9,12 +9,11 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+#include <memory>
 #include <string>
 
-#include <GLFW/glfw3.h>
-
 namespace pllee4 {
-
+namespace ui {
 class Window {
  public:
   Window(uint16_t width = 640, uint16_t height = 480,
@@ -22,17 +21,14 @@ class Window {
   ~Window();
 
   bool ShouldClose();
+  void PollEvent();
   void StartFrame();
   void RenderFrame();
 
  private:
-  static constexpr const char* glsl_version_ = "#version 130";
-  static constexpr int glfw_context_version_major_ = 3;
-  static constexpr int glfw_context_version_minor_ = 0;
-
-  GLFWwindow* glfw_window_;
-
-  ImVec4 clear_color_ = ImVec4(0.0f, 0.0f, 0.0f, 0.10f);
+  class impl;
+  std::unique_ptr<impl> pimpl_;
 };
+}  // namespace ui
 }  // namespace pllee4
 #endif /* WINDOW_HPP */
